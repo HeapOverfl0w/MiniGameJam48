@@ -1,0 +1,18 @@
+﻿html, body {
+    overflow: hidden;
+    margin: 0;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    /*cursor: url("./resources/cursor.png"), auto;*/
+}
+
+#chatbox {
+    position: absolute;
+    width : 300px;
+    height : 30px;
+    bottom: 0px;
+    left: 50%;
+    right: 25%;
+}

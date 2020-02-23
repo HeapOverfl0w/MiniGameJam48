@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape the Hedge Maze with the Bros</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <canvas id="scene"></canvas>
+    <div style="display:none;">
+        <img id="sprites" src="./images/sprites.png"/>
+    </div>
+    <input id="chatbox" />
+</body>
+</html>
+<script src="./extras.js"></script>
+<script src="./lib/signalr.js"></script>
+<script src="./connection.js"></script>
+<script src="./objects.js"></script>
+<script src="./main.js"></script>
+<script>   
+
+    var game;
+    var cvs = document.getElementById("scene");
+
+    window.onload = function() {
+        cvs.width = TILESX * TILEWIDTH;
+        cvs.height = TILESY * TILEHEIGHT;
+        cvs.style.width = window.innerWidth + "px";
+        cvs.style.height = window.innerHeight + "px";
+        ctx = cvs.getContext("2d");
+
+        document.getElementById("chatbox").style.visibility = "hidden";
+        game = new Game(ctx);
+    };
+
+    window.onresize = function() {
+        cvs.style.width = window.innerWidth + "px";
+        cvs.style.height = window.innerHeight + "px";
+    };
+
+    document.addEventListener('keydown', function(event) {
+        game.HandleKeyboardDown(event.keyCode);
+    });
+
+    document.addEventListener('keyup', function(event) {
+        game.HandleKeyboardUp(event.keyCode);});
+    
+</script>
