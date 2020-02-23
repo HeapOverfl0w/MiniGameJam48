@@ -95,6 +95,13 @@ class Game
                 this.ctx.fillStyle = TEXT_COLOR;
                 this.ctx.fillText(BRO_MESSAGE, 0, 9);
             }
+
+            for (let m = BRO_CHAT_MESSAGES.length - 1; m > -1; m--) {
+                this.ctx.fillStyle = TEXT_BACKGROUND_COLOR;
+                this.ctx.fillRect(0, TILESY * TILEHEIGHT - ((BRO_CHAT_MESSAGES.length - m) * 12), BRO_CHAT_MESSAGES[m].length * 5, 12);
+                this.ctx.fillStyle = TEXT_COLOR;
+                this.ctx.fillText(BRO_CHAT_MESSAGES[m], 0, TILESY * TILEHEIGHT - ((BRO_CHAT_MESSAGES.length - m - 1) * 12) - 3);
+            }
         }
     }
 
@@ -102,26 +109,43 @@ class Game
     {
         if (this.connected)
         {
+            AUDIO.FirstStartMusic();
             //WADS
             if (key == 87) //W - Up
             {
                 this.me.vectorContainer.Remove(UP_VECTOR);
                 this.me.vectorContainer.Add(UP_VECTOR);
+                AUDIO.PlayMud();
             }
             if (key == 83) //S - Down
             {
                 this.me.vectorContainer.Remove(DOWN_VECTOR);
                 this.me.vectorContainer.Add(DOWN_VECTOR);
+                AUDIO.PlayMud();
             }
             if (key == 65) //A - Left
             {
                 this.me.vectorContainer.Remove(LEFT_VECTOR);
                 this.me.vectorContainer.Add(LEFT_VECTOR);
+                AUDIO.PlayMud();
             }
             if (key == 68) //D - Right
             {
                 this.me.vectorContainer.Remove(RIGHT_VECTOR);
                 this.me.vectorContainer.Add(RIGHT_VECTOR);
+                AUDIO.PlayMud();
+            }
+            if (key == 49) {
+                if (AUDIO.audioOn)
+                    AUDIO.Mute();
+                else
+                    AUDIO.UnMute();
+            }
+            if (key == 50) {
+                if (AUDIO.musicOn)
+                    AUDIO.MusicOff()
+                else
+                    AUDIO.MusicOn();
             }
         }
     }
@@ -157,7 +181,7 @@ class Game
                 }
                 else {
                     if (chatbox.value != undefined && chatbox.value != "")
-                        SendBroMessage("A Bro Said: " + chatbox.value);
+                        SendBroMessage("Bro Said: " + chatbox.value);
                     chatbox.style.visibility = "hidden";
                     chatbox.value = "";
                 }

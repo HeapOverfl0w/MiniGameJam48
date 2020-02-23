@@ -103,7 +103,7 @@ namespace HedgeMazeWithBros
 
             var doorCount = random.Next(2, 5);
 
-            if (height < 35)
+            if (height < 50)
             {
                 doorCount = 2;
             }

@@ -76,6 +76,7 @@ namespace HedgeMazeWithBros
             _mazeBuilder.CreateRandomMaze();
             CreateEnemies();
             StartGame();
+            Players.Clear();
             _gameHub.Clients.All.SendAsync("ResetGame");
             Console.WriteLine("Reset Maze after 10 Minutes without Completion.");
         }
@@ -98,6 +99,7 @@ namespace HedgeMazeWithBros
                 CreateEnemies();
                 ResetResetGameTimer();
                 StartGame();
+                Players.Clear();
                 _gameHub.Clients.All.SendAsync("ResetGame");
             }
         }
@@ -109,8 +111,12 @@ namespace HedgeMazeWithBros
 
             for (int p = 0; p < Players.Count; p++)
             {
-                if (Math.Round((double)(Players[p].x / 16)) != _mazeBuilder.CurrentEndX ||
-                    Math.Round((double)(Players[p].y / 16)) != _mazeBuilder.CurrentEndY)
+                if ((Math.Round((double)(Players[p].x / 16)) != _mazeBuilder.CurrentEndX ||
+                    Math.Round((double)(Players[p].y / 16)) != _mazeBuilder.CurrentEndY) &&
+                    (Math.Floor((double)(Players[p].x / 16)) != _mazeBuilder.CurrentEndX ||
+                    Math.Floor((double)(Players[p].y / 16)) != _mazeBuilder.CurrentEndY) &&
+                    (Math.Ceiling((double)(Players[p].x / 16)) != _mazeBuilder.CurrentEndX ||
+                    Math.Ceiling((double)(Players[p].y / 16)) != _mazeBuilder.CurrentEndY))
                     return false;
             }
 

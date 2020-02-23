@@ -2,7 +2,9 @@ var MAZE = [];
 var PLAYERS = [];
 var PLAYERNUM = 0;
 var BRO_MESSAGE = "";
+var BRO_CHAT_MESSAGES = [];
 var broMessageTimeout = undefined;
+var broChatMessageTimeout = undefined;
 
 const gameConnect = new signalR.HubConnectionBuilder()
     .configureLogging(signalR.LogLevel.Information)
@@ -28,8 +30,22 @@ gameConnect.on("ResetGame", (result) => {
 });
 
 gameConnect.on("BroMessage", (result) => {
-    SetBroMessage(result);
+    if (result == "Skeleton got a bro.")
+        AUDIO.PlayBones();
+    if (result.startsWith("Bro Said:"))
+        SetBroChatMessage(result);
+    else
+        SetBroMessage(result);
 });
+
+function SetBroChatMessage(message) {
+    BRO_CHAT_MESSAGES.push(message);
+    if (broChatMessageTimeout != undefined)
+        clearTimeout(broChatMessageTimeout)
+    broChatMessageTimeout = setTimeout(function () {
+        BRO_CHAT_MESSAGES = [];
+    }, 6000);
+}
 
 function SetBroMessage(message) {
     BRO_MESSAGE = message;

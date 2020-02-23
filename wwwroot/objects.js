@@ -94,6 +94,7 @@ class Maze
             this.mazeData[this.doorTriggers[t].door.x][this.doorTriggers[t].door.y] = this.mazeData[this.doorTriggers[t].trigger1.x][this.doorTriggers[t].trigger1.y] + 100;
         }
         //update doors/gates based on player placement
+        let activated = false;
         for (let p = 0; p < this.players.length; p++) {
             if (this.players[p].num != -1) {
                 //set visited locations
@@ -102,16 +103,22 @@ class Maze
                 this.visitedLocations[tilex][tiley] = true;
                 for (let t = 0; t < this.doorTriggers.length; t++) {
                     if (tilex == this.doorTriggers[t].trigger1.x && tiley == this.doorTriggers[t].trigger1.y) {
+                        AUDIO.PlayActivate();
+                        activated = true;
                         SetBroMessage("Bro is opening a gate.");
                         this.mazeData[this.doorTriggers[t].door.x][this.doorTriggers[t].door.y] = PATH;
                     }
                     else if (this.doorTriggers[t].trigger2 != undefined && tilex == this.doorTriggers[t].trigger2.x && tiley == this.doorTriggers[t].trigger2.y) {
+                        AUDIO.PlayActivate();
+                        activated = true;
                         SetBroMessage("Bro is opening a gate.");
                         this.mazeData[this.doorTriggers[t].door.x][this.doorTriggers[t].door.y] = PATH;
                     }
                 }
             }
         }
+        if (!activated)
+            AUDIO.playedActivate = false;
     }
 
     Draw(ctx, camera, me)
@@ -179,8 +186,10 @@ class Maze
                     if (enemyTileX >= 0 && enemyTileX < this.mazeData.length &&
                         enemyTileY >= 0 && enemyTileY < this.mazeData[0].length) {
 
-                        if (this.mazeData[enemyTileX][enemyTileY] == WALL)
+                        if (this.mazeData[enemyTileX][enemyTileY] == WALL) {
                             ctx.drawImage(SPRITES, TILEWIDTH * 2, TILEHEIGHT * 2, TILEWIDTH, TILEHEIGHT, x - topX - cameraOffsetX, y - topY - cameraOffsetY, TILEWIDTH, TILEHEIGHT);
+                            AUDIO.PlayRustle();
+                        }
                         else
                             ctx.drawImage(SPRITES, TILEWIDTH, TILEHEIGHT * 2, TILEWIDTH, TILEHEIGHT, x - topX - cameraOffsetX, y - topY - cameraOffsetY, TILEWIDTH, TILEHEIGHT);
 
